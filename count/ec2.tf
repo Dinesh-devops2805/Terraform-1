@@ -1,3 +1,23 @@
+resource "aws_instance" "backend" {
+    count = length(var.instance_names)
+
+    ami = "ami-09c813fb71547fc4f"
+    instance_type = "t3.micro"
+    vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
+    # tags = {
+    #     Name = var.instance_names[count.index]
+    # }
+
+    tags = merge(
+        var.common_tags,
+        {
+            Name = var.instance_names[count.index]
+        }
+    )
+}
+
+
+
 resource "aws_security_group" "allow_ssh_terraform"{
     name        = "allow_sshh"  # becoz, allow_shh is already existed
     description = "Allow port number 22 for ssh" # optional 
@@ -32,20 +52,3 @@ resource "aws_security_group" "allow_ssh_terraform"{
 }
 
 
-resource "aws_instance" "backend" {
-    count = length(var.instance_names)
-
-    ami = "ami-09c813fb71547fc4f"
-    instance_type = "t3.micro"
-    vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
-    # tags = {
-    #     Name = var.instance_names[count.index]
-    # }
-
-    tags = merge(
-        var.common_tags,
-        {
-            Name = var.instance_names[count.index]
-        }
-    )
-}

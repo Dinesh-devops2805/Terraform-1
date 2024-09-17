@@ -1,3 +1,12 @@
+resource "aws_instance" "terraform" {
+
+    ami = var.ami_id   # ami left side and right side no need to be same 
+    instance_type = var.instance_type
+    vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
+    tags = var.tags
+}
+
+
 resource "aws_security_group" "allow_ssh_terraform"{
     name        = var.sg_name  # becoz, allow_shh is already existed
     description = var.sg_description # optional 
@@ -20,14 +29,5 @@ resource "aws_security_group" "allow_ssh_terraform"{
         ipv6_cidr_blocks = ["::/0"]
     }
 
-    tags = var.tags
-}
-
-
-resource "aws_instance" "terraform" {
-
-    ami = var.ami_id   # ami left side and right side no need to be same 
-    instance_type = var.instance_type
-    vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
     tags = var.tags
 }
