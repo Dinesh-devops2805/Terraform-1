@@ -7,10 +7,11 @@ resource "aws_instance" "terraform" {
         Name = "terraform"
     }
 
-    # in this case my laptop is local 
+      # in this case my laptop is local 
     provisioner "local-exec"{
         command = "echo ${self.private_ip} > private_ip.txt"
     }
+
 
     connection {
         type = "ssh"
